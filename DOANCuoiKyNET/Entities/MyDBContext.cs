@@ -35,6 +35,8 @@ namespace DOANCuoiKyNET.Entities
         public DbSet<SanPham> SanPhams { get; set; }
 
         public DbSet<ThuongHieu> ThuongHieus { get; set; }
+
+        public DbSet<DSEmail> dSEmails { get; set; }
    
         public object User { get; internal set; }
 

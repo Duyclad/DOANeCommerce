@@ -5,6 +5,6 @@
     Layout = null;
 }       
 @foreach (var item in Model) {
-<a href="/SanPham/LoaiSP/@item.idLoaiSP" class="dropdown-item">@Html.DisplayFor(modelItem => item.tenLoaiSP)</a>
+<a href="/SanPham/LoaiSP/@SlugGenerator.SlugGenerator.GenerateSlug(item.tenLoaiSP)-@item.idLoaiSP" class="dropdown-item">@Html.DisplayFor(modelItem => item.tenLoaiSP)</a>
 }
     

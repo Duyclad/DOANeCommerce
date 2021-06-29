@@ -327,13 +327,13 @@ namespace DOANCuoiKyNET.Controllers
 
                     HttpContext.Session.Set("mxns", itemmxn);
                     var dsusers = _context.Users
-                  .SingleOrDefault(ipp => (ipp.emailUser == email));
+                  .SingleOrDefault(ipp => (ipp.emailUser == email || ipp.sdtUser == email));
 
                     var dsnvs = _context.Users
                   .SingleOrDefault(ipp => ipp.vaiTro=="staffs");
 
                     var dsqtris = _context.Users
-                  .SingleOrDefault(ipp => (ipp.idUser==dsusers.idUser));
+                  .SingleOrDefault(ipp => (ipp.idUser==dsAcc.idUser));
                     var item =
                               new sessionuser
                               {
@@ -537,7 +537,7 @@ namespace DOANCuoiKyNET.Controllers
             else
             {
                 var test = _context.Users
-                .Where(acc => acc.emailUser == email)
+                .Where(acc => acc.emailUser == email || acc.sdtUser == email)
 
                 .Select(p => new User
                 {

@@ -90,6 +90,7 @@
         });
 
 
+
         $("#submitlh").click(function () {
             $.ajax({
                 url: "/Lienhe/indexadd/",
@@ -275,6 +276,30 @@ $.ajax({
 
         $("#tracuu").click(function () {
             window.location = "/Donhang/tracuu/" + $("#tracuudonhang").val();
+        });
+
+
+        $("#dangkyemail").click(function () {
+            debugger;
+            //var s = $("#dangkynhanthongtinemail").val();
+
+            $.ajax({
+                url: "/SendMail/addmail/" + $("#dangkynhanthongtinemail").val() + "/",
+                data: {
+                    
+                },
+                type: "POST",
+                success: function () {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Đăng ký nhận tin qua email thành công',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            });
+           // window.location = "/Donhang/tracuu/" + $("#tracuudonhang").val();
         });
 
         

@@ -15,10 +15,28 @@ namespace DOANCuoiKyNET.Controllers
     public class SendMailController :Controller
     {
         private readonly IEmailSender _emailsender;
-     
-        public SendMailController(IEmailSender emailSender)
+        private readonly MyDBContext _context;
+       
+        public SendMailController(IEmailSender emailSender, MyDBContext context)
         {
             _emailsender = emailSender;
+            _context = context;
+        }
+
+        [HttpPost]
+        public IActionResult addmail(string? id)
+        {
+            var dsAcc = _context.dSEmails
+                .SingleOrDefault(acc => (acc.diachiemail==id));
+            if (dsAcc == null)
+            {
+                DSEmail ds = new DSEmail();
+                ds.diachiemail = id;
+                _context.Add(ds);
+                _context.SaveChanges();
+            }
+            
+            return View();
         }
 
 
@@ -65,6 +83,8 @@ namespace DOANCuoiKyNET.Controllers
             }
             return View();
         }
+
+        
 
         public Models.MaXacNhan xoass
         {

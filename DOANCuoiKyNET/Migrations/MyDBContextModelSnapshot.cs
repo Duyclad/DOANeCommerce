@@ -116,6 +116,21 @@ namespace DOANCuoiKyNET.Migrations
                     b.ToTable("ChinhSachGiaoHang");
                 });
 
+            modelBuilder.Entity("DOANCuoiKyNET.Entities.DSEmail", b =>
+                {
+                    b.Property<int>("idemail")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("diachiemail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("idemail");
+
+                    b.ToTable("DSEmail");
+                });
+
             modelBuilder.Entity("DOANCuoiKyNET.Entities.DieuKhoanDichVu", b =>
                 {
                     b.Property<int>("idDieuKhoanDV")

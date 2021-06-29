@@ -39,6 +39,7 @@ namespace DOANCuoiKyNET.Controllers
             return View();
         }
 
+        [Route("Sanpham/Chitiet/{slug}-{id:int}")]
         public IActionResult chitiet(int? id)
         {
             if (ssuser != null)
@@ -80,7 +81,7 @@ namespace DOANCuoiKyNET.Controllers
             return View(ctx);
         }
 
-
+       
         public IActionResult timkiem(string id)
         {
             if (ssuser != null)
@@ -132,6 +133,7 @@ namespace DOANCuoiKyNET.Controllers
         }
 
         [HttpPost]
+        
         public IActionResult sanphambanchay()
         {
             var products = _context.SanPhams
@@ -143,6 +145,7 @@ namespace DOANCuoiKyNET.Controllers
         }
 
         [HttpPost]
+        
         public IActionResult sanphammoi()
         {
             var products = _context.SanPhams
@@ -155,6 +158,7 @@ namespace DOANCuoiKyNET.Controllers
         }
 
         [HttpPost]
+        
         public IActionResult sanphamnoibat()
         {
             var products = _context.SanPhams
@@ -166,7 +170,7 @@ namespace DOANCuoiKyNET.Controllers
         }
 
 
-        
+        [Route("Sanpham/loaisp/{slug}-{id:int}")]
         public IActionResult loaisp(int? id)
         {
             if (ssuser != null)
@@ -205,6 +209,7 @@ namespace DOANCuoiKyNET.Controllers
 
 
        [HttpPost]
+        
         public IActionResult TimAjax(string keyword, string kw2,string kw3,string idloai)
         {
      

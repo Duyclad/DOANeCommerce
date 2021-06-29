@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\STUDY NET.MVC\\DOANCuoiKyNET\\DOANCuoiKyNET\\DOANCuoiKyNET.csproj": {}
+    "E:\\STUDY NET.MVC\\ThuongMaiDienTu\\DOANeCommerce\\DOANCuoiKyNET\\DOANCuoiKyNET.csproj": {}
   },
   "projects": {
-    "E:\\STUDY NET.MVC\\DOANCuoiKyNET\\DOANCuoiKyNET\\DOANCuoiKyNET.csproj": {
+    "E:\\STUDY NET.MVC\\ThuongMaiDienTu\\DOANeCommerce\\DOANCuoiKyNET\\DOANCuoiKyNET.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\STUDY NET.MVC\\DOANCuoiKyNET\\DOANCuoiKyNET\\DOANCuoiKyNET.csproj",
+        "projectUniqueName": "E:\\STUDY NET.MVC\\ThuongMaiDienTu\\DOANeCommerce\\DOANCuoiKyNET\\DOANCuoiKyNET.csproj",
         "projectName": "DOANCuoiKyNET",
-        "projectPath": "E:\\STUDY NET.MVC\\DOANCuoiKyNET\\DOANCuoiKyNET\\DOANCuoiKyNET.csproj",
+        "projectPath": "E:\\STUDY NET.MVC\\ThuongMaiDienTu\\DOANeCommerce\\DOANCuoiKyNET\\DOANCuoiKyNET.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "E:\\STUDY NET.MVC\\DOANCuoiKyNET\\DOANCuoiKyNET\\obj\\",
+        "outputPath": "E:\\STUDY NET.MVC\\ThuongMaiDienTu\\DOANeCommerce\\DOANCuoiKyNET\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -74,6 +74,10 @@
             "NETCore.MailKit": {
               "target": "Package",
               "version": "[2.0.3, )"
+            },
+            "SlugGenerator": {
+              "target": "Package",
+              "version": "[2.0.2, )"
             }
           },
           "imports": [
