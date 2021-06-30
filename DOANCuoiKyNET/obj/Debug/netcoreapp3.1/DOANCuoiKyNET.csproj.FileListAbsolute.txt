@@ -528,3 +528,7 @@ E:\STUDY NET.MVC\ThuongMaiDienTu\DOANeCommerce\DOANCuoiKyNET\obj\Debug\netcoreap
 E:\STUDY NET.MVC\ThuongMaiDienTu\DOANeCommerce\DOANCuoiKyNET\obj\Debug\netcoreapp3.1\DOANCuoiKyNET.genruntimeconfig.cache
 E:\STUDY NET.MVC\ThuongMaiDienTu\DOANeCommerce\DOANCuoiKyNET\obj\Debug\netcoreapp3.1\Razor\Views\SendMail\addmail.cshtml.g.cs
 E:\STUDY NET.MVC\ThuongMaiDienTu\DOANeCommerce\DOANCuoiKyNET\bin\Debug\netcoreapp3.1\SlugGenerator.dll
+E:\STUDY NET.MVC\ThuongMaiDienTu\DOANeCommerce\DOANCuoiKyNET\bin\Debug\netcoreapp3.1\PayPalCheckoutSdk.dll
+E:\STUDY NET.MVC\ThuongMaiDienTu\DOANeCommerce\DOANCuoiKyNET\bin\Debug\netcoreapp3.1\BraintreeHttp-Dotnet.dll
+E:\STUDY NET.MVC\ThuongMaiDienTu\DOANeCommerce\DOANCuoiKyNET\bin\Debug\netcoreapp3.1\PayPalHttp-Dotnet.dll
+E:\STUDY NET.MVC\ThuongMaiDienTu\DOANeCommerce\DOANCuoiKyNET\obj\Debug\netcoreapp3.1\Razor\Views\GioHang\CheckOutFail.cshtml.g.cs

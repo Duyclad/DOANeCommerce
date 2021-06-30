@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "ZGMeNwjz26VRIGoh3ubd0OwgxrU7d0O+dy5ltZK7TXHKKlWssXfAVvtxcqJ//tgOpmiB5URfpfK/yA/7BahyOA==",
+  "dgSpecHash": "nBBD2uGlM6mcF9/N4o47EAI9SRaUrzmusw67NE5hQw12tb4t5KbvvZhG0W2tuzbNo0muWUevl3GPa2Rz/YCvBw==",
   "success": true,
   "projectFilePath": "E:\\STUDY NET.MVC\\ThuongMaiDienTu\\DOANeCommerce\\DOANCuoiKyNET\\DOANCuoiKyNET.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\HP\\.nuget\\packages\\braintreehttp-dotnet\\0.3.0\\braintreehttp-dotnet.0.3.0.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\mailkit\\2.6.0\\mailkit.2.6.0.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
@@ -65,6 +66,8 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\nuget.frameworks\\4.7.0\\nuget.frameworks.4.7.0.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\paypalcheckoutsdk\\1.0.3\\paypalcheckoutsdk.1.0.3.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\paypalhttp\\1.0.0\\paypalhttp.1.0.0.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\portable.bouncycastle\\1.8.5\\portable.bouncycastle.1.8.5.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",

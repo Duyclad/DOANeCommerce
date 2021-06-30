@@ -43,6 +43,8 @@
 
         });
 
+
+
         $.ajax({
             url: "/Sanpham/sanphammoi/",
             type: "POST",
@@ -71,6 +73,10 @@
             },
 
 
+        });
+
+        $("#paypalcheckout").click(function () {
+            window.location = "/giohang/payPalCheckOut?mggvl=" + $("#mggvl").val() + "&mggvlcode=" + $("#mggvlcode").val() + "&tth=" + $("#tth").val() + "&tongcong=" + $("#tongcong").val() + "&ho=" + $("#ho").val() + "&ten=" + $("#ten").val() + "&diachi=" + $("#diachi").val() + "&email=" + $("#email").val() + "&sdt=" + $("#sdt").val() + "&ghichu=" + $("#ghichu").val();
         });
 
         $("#timkiemdssp").keyup(function () {

@@ -4,9 +4,19 @@ using DOANCuoiKyNET.Models;
 using DOANCuoiKyNET.Session;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using BraintreeHttp;
+//using PayPal;
+//using PayPal.Api;
+
+using PayPalCheckoutSdk.Core;
+using PayPalCheckoutSdk.Payments;
+using PayPalCheckoutSdk.Orders;
+//using PayPalCheckoutSdk.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -74,10 +84,15 @@ namespace DOANCuoiKyNET.Controllers
         }
 
         private readonly MyDBContext _context;
+        private readonly string _clientID;
+        private readonly string _secretKey;
+        public double tyGiaUSD = 23000;
 
-        public GioHangController(MyDBContext context)
+        public GioHangController(MyDBContext context,IConfiguration config)
         {
             _context = context;
+            _clientID = config["PaypalSettings:ClientID"];
+            _secretKey = config["PaypalSettings:SecretKey"];
         }
 
         public List<SSGioHang> Carts
@@ -99,6 +114,19 @@ namespace DOANCuoiKyNET.Controllers
             get
             {
                 var data = HttpContext.Session.Get<sessionuser>("ssuser");
+                /* if (data == null)
+                 {
+                     data = new sessionuser();
+                 }*/
+                return data;
+            }
+        }
+
+        public ssdonhangpaypal ssdatapaypal
+        {
+            get
+            {
+                var data = HttpContext.Session.Get<ssdonhangpaypal>("datapaypal");
                 /* if (data == null)
                  {
                      data = new sessionuser();
@@ -220,8 +248,24 @@ namespace DOANCuoiKyNET.Controllers
 
 
 
-        public IActionResult xacnhancheckout(int mggvl,string mggvlcode, int tth, int tongcong, string ho, string ten, string diachi, string email,string sdt, string ghichu )
+        public IActionResult xacnhancheckout(string id,int mggvl,string mggvlcode, int tth, int tongcong, string ho, string ten, string diachi, string email,string sdt, string ghichu )
         {
+            if (id != null && id != "")
+            {
+                var temp = ssdatapaypal;
+                 mggvl= temp.mggvl ;
+                mggvlcode = temp.mggvlcode;
+                tth = temp.tth;
+                tongcong = temp.tongcong;
+                ho = temp.ho;
+                ten = temp.ten;
+                diachi = temp.diachi;
+                email = temp.email;
+                sdt = temp.sdt;
+                ghichu = temp.ghichu;
+
+
+            }
 
             if (ssuser != null)
             {
@@ -269,7 +313,7 @@ namespace DOANCuoiKyNET.Controllers
 
             
             DateTime xx = DateTime.Now;
-
+            
             DonHang dh = new DonHang();
           if (ssuser != null)
             {
@@ -287,8 +331,20 @@ namespace DOANCuoiKyNET.Controllers
             dh.tongTienHang = tth;
             dh.tongSoTien = tongcong;
             dh.maGiamGiaDH = mggvl;
+            int x;
+            if (id != "" && id != null)
+            {
+                //  dh.idDH = Int32.Parse(id);
+                dh.ghiChu = ghichu + " - Mã hóa đơn thanh toán Paypal: " + id;
+                dh.trangThai = "Đã thanh toán qua PayPal, chờ giao hàng";
+                 x = insert(dh);
+            }
+            else
+            {
 
-            int x = insert(dh);
+
+                 x = insert(dh);
+            }
 
             
 
@@ -332,6 +388,10 @@ ViewBag.mess = "Đặt hàng thành công! Bạn có thể dùng mã này để 
             {
                 ViewBag.mess = "Đặt hàng thành công!";
             }
+
+            var sss = new ssdonhangpaypal();
+
+            HttpContext.Session.Set("datapaypal", sss);
 
             ViewBag.iddh = x;
             ViewBag.emails = email;
@@ -399,8 +459,238 @@ ViewBag.mess = "Đặt hàng thành công! Bạn có thể dùng mã này để 
             return RedirectToAction("index", "giohang");
         }
 
+        string rdtextfail = "";
+
+        public void setRD(string s)
+        {
+            rdtextfail = s;
+        }
+
+        public async System.Threading.Tasks.Task<IActionResult> payPalCheckOut(int mggvl, string mggvlcode, int tth, int tongcong, string ho, string ten, string diachi, string email, string sdt, string ghichu)
+        {
+            var data = new ssdonhangpaypal
+            {
+                ho = ho,
+                mggvl =mggvl,
+                mggvlcode = mggvlcode,
+                tth=tth,
+                tongcong=tongcong,
+                ten=ten,
+                diachi=diachi,
+                email=email,
+                sdt=sdt,
+                ghichu=ghichu,
+            };
+            HttpContext.Session.Set("datapaypal", data);
+            // string a = name;
+            //   a = s;
+            var environment = new SandboxEnvironment(_clientID, _secretKey);
+         //   var client = new PayPalHttpClient(environment);
+
+            #region Create payment (just example)
+            /* var itemList = new ItemList()
+             {
+                 items = new List<PayPal.Api.Item>()
+             };*/
+            var itemList = new List<PayPalCheckoutSdk.Orders.Item>();
+            double total2 = 0;
+            var total = Math.Round(Carts.Sum(p => p.thanhTien) / tyGiaUSD, 2);
+            foreach (var item in Carts)
+            {
+                /*itemList.items.Add(new PayPal.Api.Item()
+                {
+                    name = item.tensp,
+                    currency = "USD",
+                    price = Math.Round(item.giasp / tyGiaUSD, 2).ToString(),
+                    quantity = item.soLuong.ToString(),
+                    sku = "sku",
+                    tax = "0"
+                });*/
+                total2 = total2 + Math.Round(item.giasp / tyGiaUSD, 2) * item.soLuong;
+
+                itemList.Add(
+                    new PayPalCheckoutSdk.Orders.Item
+                    {
+                        Name = item.tensp,
+                        Sku = "sku",
+                        Tax = new PayPalCheckoutSdk.Orders.Money
+                        {
+                            CurrencyCode = "USD",
+                            Value = "0"
+                        },
+                        Quantity = item.soLuong.ToString(),
+                        UnitAmount =
+                            new PayPalCheckoutSdk.Orders.Money
+                            {
+                                CurrencyCode = "USD",
+                                Value = Math.Round(item.giasp / tyGiaUSD, 2).ToString()
+                            }
+                    }
+                    );
+            }
+
+            total2 = Math.Round(total2, 2);
+            #endregion
+
+            //var payPalOderId = DateTime.Now.Ticks;
+            //int j = 1;
+            
+            
+
+            var hostname = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+            Random random = new Random();
+            string rd1 = random.Next(10000, 99999).ToString();
+            string rd = random.Next(1000, 9999).ToString();
+            rdtextfail = rd1 + rd;
+            setRD(rdtextfail);
+            OrderRequest payment = new OrderRequest()
+            {
+                CheckoutPaymentIntent = "CAPTURE",
+                PurchaseUnits = new List<PurchaseUnitRequest>
+                {
+                    new PurchaseUnitRequest
+                    {
+                        AmountWithBreakdown = new AmountWithBreakdown
+                        {
+                            Value = total2.ToString(),
+                            CurrencyCode = "USD",
+
+                            AmountBreakdown = new AmountBreakdown
+                            {
+                                TaxTotal = tinhtien("0") ,
+                                Shipping = tinhtien("0"),
+                                //shipping_discount="0",
+                                //subtotal = "0",
+                                ItemTotal = new PayPalCheckoutSdk.Orders.Money
+                                {
+                                    CurrencyCode = "USD",
+                                    Value = total2.ToString(),
+                                },
+                            }
+                        },
+                        Items = itemList,
+                        ReferenceId =  rd1 + rd,
+                        Description = "Invoice #" + rd1 + rd,
+                        CustomId = "CUST-HighFashions"
 
 
+                        //item_list = itemList,
+                        //description = ,
+                        //invoice_number = ,
+                        
+                    }
+
+                },
+                ApplicationContext = new ApplicationContext
+                {
+                    BrandName = "GONZ Store INC",
+                    LandingPage = "BILLING",
+                    UserAction = "CONTINUE",
+                   // ShippingPreference = $"{hostname}/GioHang/xacnhancheckout/",
+                    CancelUrl = $"{hostname}/GioHang/CheckOutFail/"+rdtextfail,
+                    ReturnUrl= $"{hostname}/GioHang/xacnhancheckout/"+rdtextfail,
+                   // PaymentMethod = new PaymentMethod
+                   // {
+                   //     PayeePreferred = "paypal",
+                   //     PayerSelected = "paypal"
+                   // },
+                },
+
+                
+                
+            };
+            //var response = await ExecutePayPalRequest(paypalHttpClient, request);
+            //OrdersCreateRequest request = new OrdersCreateRequest();
+            // request.RequestBody(payment);
+
+            // var request = new OrdersCreateRequest();
+
+            //   request.Prefer("return=representation");
+
+
+
+            // request.RequestBody(payment);
+
+          //  await CreateOrder(payment);
+
+
+            var request = new OrdersCreateRequest();
+            request.Prefer("return=representation");
+            request.RequestBody(payment);
+            var response = await PayPalClient.client().Execute(request);
+
+            try
+            {
+
+                //var response = await client.;
+
+                //  var result = response.Result<Payment>();
+
+                var result = response.Result<Order>();
+                var OderId = result.Id;
+                var statusCode = result.Status;
+                //   Console.WriteLine("Status: {0}", );
+                //  Console.WriteLine("Order Id: {0}", );
+                // Console.WriteLine("Intent: {0}", );
+                var Intent = result.CheckoutPaymentIntent;
+                //    Console.WriteLine("Links:");
+                //    foreach (PayPalCheckoutSdk.Orders.LinkDescription link in result.Links)
+                //   {
+                //       Console.WriteLine("\t{0}: {1}\tCall Type: {2}", link.Rel, link.Href, link.Method);
+                //  }
+              //  var links = result.Links.GetEnumerator();
+                string Paypalred = null;
+                foreach (PayPalCheckoutSdk.Orders.LinkDescription link in result.Links)
+                {
+                    if (link.Rel.ToLower().Trim().Equals("approve"))
+                    {
+                        Paypalred = link.Href;
+                    }
+                }    
+                    AmountWithBreakdown amount = result.PurchaseUnits[0].AmountWithBreakdown;
+                //  Console.WriteLine("Total Amount: {0} {1}", , );
+                var totalamount = amount.CurrencyCode + " " + amount.Value;
+                return Redirect(Paypalred);
+            }
+            catch (HttpException httpException)
+            {
+                var statusCode = httpException.StatusCode;
+                var debugId = httpException.Headers.GetValues("PayPal-Debug-Id").FirstOrDefault();
+                return Redirect("/GioHang/CheckOutFail/"+rdtextfail);
+
+            }
+
+
+
+            return View();
+        }
+
+        
+
+
+        PayPalCheckoutSdk.Orders.Money tinhtien(string value)
+        {
+            PayPalCheckoutSdk.Orders.Money x = new PayPalCheckoutSdk.Orders.Money();
+            x.CurrencyCode = "USD";
+            x.Value = value;
+            return x;
+        }
+        
+
+        public IActionResult CheckOutFail(string id)
+        {
+            
+            if (id==null || id == "" || ssdatapaypal ==null)
+            {
+                return RedirectToAction("index", "GioHang");
+            }
+            var ss = new ssdonhangpaypal();
+
+            HttpContext.Session.Set("datapaypal", ss);
+            ViewBag.text = id;
+            //rdtextfail = "";
+            return View();
+        }
 
     }
 }
