@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "nBBD2uGlM6mcF9/N4o47EAI9SRaUrzmusw67NE5hQw12tb4t5KbvvZhG0W2tuzbNo0muWUevl3GPa2Rz/YCvBw==",
+  "dgSpecHash": "xXLEGj475O06jb1wzyEK7X9j7nmkrp2+UOdYgL1HEwdNYjzF0WIPcKCRSmCLhiPY7C4l2DuSZjsNTPlXEdfojg==",
   "success": true,
   "projectFilePath": "E:\\STUDY NET.MVC\\ThuongMaiDienTu\\DOANeCommerce\\DOANCuoiKyNET\\DOANCuoiKyNET.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HP\\.nuget\\packages\\braintreehttp-dotnet\\0.3.0\\braintreehttp-dotnet.0.3.0.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\log4net\\2.0.12\\log4net.2.0.12.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\mailkit\\2.6.0\\mailkit.2.6.0.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",

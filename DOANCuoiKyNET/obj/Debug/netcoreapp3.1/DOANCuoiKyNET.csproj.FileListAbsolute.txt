@@ -532,3 +532,5 @@ E:\STUDY NET.MVC\ThuongMaiDienTu\DOANeCommerce\DOANCuoiKyNET\bin\Debug\netcoreap
 E:\STUDY NET.MVC\ThuongMaiDienTu\DOANeCommerce\DOANCuoiKyNET\bin\Debug\netcoreapp3.1\BraintreeHttp-Dotnet.dll
 E:\STUDY NET.MVC\ThuongMaiDienTu\DOANeCommerce\DOANCuoiKyNET\bin\Debug\netcoreapp3.1\PayPalHttp-Dotnet.dll
 E:\STUDY NET.MVC\ThuongMaiDienTu\DOANeCommerce\DOANCuoiKyNET\obj\Debug\netcoreapp3.1\Razor\Views\GioHang\CheckOutFail.cshtml.g.cs
+E:\STUDY NET.MVC\ThuongMaiDienTu\DOANeCommerce\DOANCuoiKyNET\bin\Debug\netcoreapp3.1\log4net.dll
+E:\STUDY NET.MVC\ThuongMaiDienTu\DOANeCommerce\DOANCuoiKyNET\obj\Debug\netcoreapp3.1\Razor\Views\GioHang\VNPayCheckOut.cshtml.g.cs

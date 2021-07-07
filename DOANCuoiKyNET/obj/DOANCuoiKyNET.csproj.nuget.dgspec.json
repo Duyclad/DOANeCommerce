@@ -90,6 +90,10 @@
             "SlugGenerator": {
               "target": "Package",
               "version": "[2.0.2, )"
+            },
+            "log4net": {
+              "target": "Package",
+              "version": "[2.0.12, )"
             }
           },
           "imports": [

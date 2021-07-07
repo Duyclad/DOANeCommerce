@@ -39,9 +39,11 @@ namespace DOANCuoiKyNET.Controllers
             return View();
         }
 
-        [Route("Sanpham/Chitiet/{slug}-{id:int}")]
+        //[Route("Sanpham/Chitiet/{slug}-{id:int}")]
+        [Route("/{slug}-{id:int}")]
         public IActionResult chitiet(int? id)
         {
+
             if (ssuser != null)
             {
                 ViewBag.houser = ssuser.hoUser;
@@ -77,7 +79,12 @@ namespace DOANCuoiKyNET.Controllers
 
             _context.Update(ct);
             _context.SaveChanges();
+            var hostname = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
 
+            ViewBag.url = hostname + "/" + SlugGenerator.SlugGenerator.GenerateSlug(ct.tenSP) +"-" + ct.idSP+ "/";
+            ViewBag.title = ct.tenSP + " - GONZ Store";
+            ViewBag.description = ct.moTa;
+            ViewBag.img = hostname + "/images/sanpham/" + ct.hinhAnh;
             return View(ctx);
         }
 
@@ -170,6 +177,7 @@ namespace DOANCuoiKyNET.Controllers
         }
 
 
+        // [Route("Sanpham/loaisp/{slug}-{id:int}")]
         [Route("Sanpham/loaisp/{slug}-{id:int}")]
         public IActionResult loaisp(int? id)
         {

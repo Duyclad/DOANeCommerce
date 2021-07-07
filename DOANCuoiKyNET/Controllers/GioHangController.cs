@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using BraintreeHttp;
+using System.Web;
+
+using Microsoft.AspNetCore.Http.Features;
 //using PayPal;
 //using PayPal.Api;
 
@@ -19,6 +22,8 @@ using System.Linq;
 
 using System.Threading;
 using System.Threading.Tasks;
+using log4net;
+using System.Net;
 
 namespace DOANCuoiKyNET.Controllers
 {
@@ -49,6 +54,7 @@ namespace DOANCuoiKyNET.Controllers
                 ViewBag.tenuser = "KHOẢN";
                 ViewBag.accmenu1 = "Đăng nhập";
             }
+         //   string a = SlugGenerator.SlugGenerator.GenerateSlug("1532");
             return View(Carts);
         }
 
@@ -86,6 +92,8 @@ namespace DOANCuoiKyNET.Controllers
         private readonly MyDBContext _context;
         private readonly string _clientID;
         private readonly string _secretKey;
+        private readonly string _codeVNPAY;
+        private readonly string _secretKeyVNPAY;
         public double tyGiaUSD = 23000;
 
         public GioHangController(MyDBContext context,IConfiguration config)
@@ -93,6 +101,8 @@ namespace DOANCuoiKyNET.Controllers
             _context = context;
             _clientID = config["PaypalSettings:ClientID"];
             _secretKey = config["PaypalSettings:SecretKey"];
+            _codeVNPAY = config["VNPaySettings:TmnCode"];
+            _secretKeyVNPAY = config["VNPaySettings:SecretKey"];
         }
 
         public List<SSGioHang> Carts
@@ -248,7 +258,7 @@ namespace DOANCuoiKyNET.Controllers
 
 
 
-        public IActionResult xacnhancheckout(string id,int mggvl,string mggvlcode, int tth, int tongcong, string ho, string ten, string diachi, string email,string sdt, string ghichu )
+        public IActionResult xacnhancheckout(string id,int mggvl,string mggvlcode, int tth, int tongcong, string ho, string ten, string diachi, string email,string sdt, string ghichu , string howpay)
         {
             if (id != null && id != "")
             {
@@ -292,7 +302,7 @@ namespace DOANCuoiKyNET.Controllers
 
             if (sdt == null ||email==null)
             {
-                return RedirectToAction("index", "home");
+                return RedirectToAction("index", "giohang");
             }
             var mggcode = _context.MaGiamGias.FirstOrDefault(p => p.codeMGG == mggvlcode);
 
@@ -335,8 +345,20 @@ namespace DOANCuoiKyNET.Controllers
             if (id != "" && id != null)
             {
                 //  dh.idDH = Int32.Parse(id);
-                dh.ghiChu = ghichu + " - Mã hóa đơn thanh toán Paypal: " + id;
-                dh.trangThai = "Đã thanh toán qua PayPal, chờ giao hàng";
+                
+
+                if (howpay == "vnpay")
+                {
+                    dh.ghiChu = ghichu + " - Mã giao dịch VNPAY: " + id;
+                    dh.trangThai = "Đã thanh toán qua VNPay, chờ giao hàng";
+                }
+                else
+                {
+                    dh.ghiChu = ghichu + " - Mã hóa đơn thanh toán Paypal: " + id;
+
+
+                    dh.trangThai = "Đã thanh toán qua PayPal, chờ giao hàng";
+                }
                  x = insert(dh);
             }
             else
@@ -662,7 +684,7 @@ ViewBag.mess = "Đặt hàng thành công! Bạn có thể dùng mã này để 
 
 
 
-            return View();
+            ///return View();
         }
 
         
@@ -691,6 +713,142 @@ ViewBag.mess = "Đặt hàng thành công! Bạn có thể dùng mã này để 
             //rdtextfail = "";
             return View();
         }
+
+        private static readonly ILog log =
+          LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        public IActionResult VNPayCheckOut(int mggvl, string mggvlcode, int tth, int tongcong, string ho, string ten, string diachi, string email, string sdt, string ghichu)
+        {
+            var data = new ssdonhangpaypal
+            {
+                ho = ho,
+                mggvl = mggvl,
+                mggvlcode = mggvlcode,
+                tth = tth,
+                tongcong = tongcong,
+                ten = ten,
+                diachi = diachi,
+                email = email,
+                sdt = sdt,
+                ghichu = ghichu,
+            };
+            HttpContext.Session.Set("datapaypal", data);
+            // string a = name;
+            //   a = s;
+            var hostname = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+
+            IPHostEntry iPHostEntry = Dns.GetHostEntry(Dns.GetHostName());
+            string ipaddress = Convert.ToString(iPHostEntry.AddressList.FirstOrDefault(add => add.AddressFamily==System.Net.Sockets.AddressFamily.InterNetwork));
+
+
+            Random random = new Random();
+            string rd1 = random.Next(10000, 99999).ToString();
+            string rd = random.Next(1000, 9999).ToString();
+            rdtextfail = rd1 + rd;
+            setRD(rdtextfail);
+            //Get Config Info
+            string vnp_Returnurl = hostname + "/GioHang/IPNURLVNPAY/"; //URL nhan ket qua tra ve 
+            string vnp_Url = "http://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; //URL thanh toan cua VNPAY 
+            string vnp_TmnCode = _codeVNPAY; //Ma website
+            string vnp_HashSecret = _secretKeyVNPAY; //Chuoi bi mat
+
+            string dec = "";
+            
+
+            foreach (var item in Carts)
+            {
+                /*itemList.items.Add(new PayPal.Api.Item()
+                {
+                    name = item.tensp,
+                    currency = "USD",
+                    price = Math.Round(item.giasp / tyGiaUSD, 2).ToString(),
+                    quantity = item.soLuong.ToString(),
+                    sku = "sku",
+                    tax = "0"
+                });*/
+                
+
+                dec = dec + item.soLuong.ToString() + " x " + item.tensp + "[Đơn giá: " + item.giasp.ToString() + "] ; \n";
+                
+                      
+            }
+
+
+            //Get payment input
+            OrderInfo order = new OrderInfo();
+            //Save order to db
+            order.OrderId = DateTime.Now.Ticks;
+            order.Amount = tongcong*100;
+            order.OrderDescription = dec;
+            order.CreatedDate = DateTime.Now;
+            string locale = "vn";
+            //Build URL for VNPAY
+            VnPayLibrary vnpay = new VnPayLibrary();
+
+            vnpay.AddRequestData("vnp_Version", "2.0.0");
+            vnpay.AddRequestData("vnp_Command", "pay");
+            vnpay.AddRequestData("vnp_TmnCode", vnp_TmnCode);
+            vnpay.AddRequestData("vnp_Amount", order.Amount.ToString());
+            
+            vnpay.AddRequestData("vnp_CreateDate", order.CreatedDate.ToString("yyyyMMddHHmmss"));
+            vnpay.AddRequestData("vnp_CurrCode", "VND");
+            vnpay.AddRequestData("vnp_IpAddr", ipaddress);
+
+
+            if (!string.IsNullOrEmpty(locale))
+            {
+                vnpay.AddRequestData("vnp_Locale", locale);
+            }
+            else
+            {
+                vnpay.AddRequestData("vnp_Locale", "vn");
+            }
+            vnpay.AddRequestData("vnp_OrderInfo", order.OrderDescription);
+            vnpay.AddRequestData("vnp_OrderType", "other"); //default value: other
+            vnpay.AddRequestData("vnp_ReturnUrl", vnp_Returnurl);
+            vnpay.AddRequestData("vnp_TxnRef", order.OrderId.ToString());
+
+            string paymentUrl = vnpay.CreateRequestUrl(vnp_Url, vnp_HashSecret);
+         //   log.InfoFormat("VNPAY URL: {0}", paymentUrl);
+            Response.Redirect(paymentUrl);
+
+
+            //   var client = new PayPalHttpClient(environment);
+
+
+
+            return View();
+        }
+
+
+        public IActionResult IPNURLVNPAY(string vnp_ResponseCode , string vnp_TransactionNo)
+        {
+            
+            
+                string vnp_HashSecret = _secretKeyVNPAY; //Secret key
+                var vnpayData = Request.QueryString;
+                
+                //Lay danh sach tham so tra ve tu VNPAY
+                //vnp_TxnRef: Ma don hang merchant gui VNPAY tai command=pay    
+                //vnp_TransactionNo: Ma GD tai he thong VNPAY
+                //vnp_ResponseCode:Response code from VNPAY: 00: Thanh cong, Khac 00: Xem tai lieu
+                //vnp_SecureHash: SHA256 cua du lieu tra ve
+
+                
+                if (vnp_ResponseCode == "00")
+                {
+                    return Redirect("/giohang/xacnhancheckout/" + vnp_TransactionNo + "?howpay=vnpay");
+                }
+
+            else
+            {
+                return Redirect("/giohang/CheckOutFail/VNPay"  );
+            }
+            
+
+            
+        }
+
 
     }
 }

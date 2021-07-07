@@ -2,12 +2,43 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="vi-VN">
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NVG4W9R6GQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-NVG4W9R6GQ');
+    </script>
+    <!-- Google Tag Manager -->
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-NBWLFBK');</script>
+    <!-- End Google Tag Manager -->
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     <meta charset="utf-8">
-    <link href="img/favicon.ico" rel="icon">
+    <meta name="description" content="Mua quần áo tại GONZStore, thanh toán nhanh chóng qua PayPal, VNPay, chính sách giao hàng miễn phí tận nhà! Còn chần chừ gì nữa, hãy đến với GONZStore để được tư vấn thêm với nhân viên trực Messenger và TawkTo 24/24, CHAT NGAY!!!" />
+    <meta name="keywords" content="GONZStore, thời trang 2021, thời trang xuân hạ thu đông, SALE đỉnh cao, FREESHIP tận nhà, thanh toán nhanh chóng tiện lợi" />
+    <link rel="canonical" href="@ViewBag.url" />
+
+    <meta property="og:url" content="@ViewBag.url" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="@ViewBag.title" />
+    <meta property="og:description" content="@ViewBag.description" />
+    <meta property="og:image" content="@ViewBag.img" />
+
+    <!--<link href="img/favicon.ico" rel="icon">-->
+    <link rel="shortcut icon" type="image/png" href="/favicon_GONZStore.png" alt="favicon"/>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -27,6 +58,15 @@
     @RenderSection("css", required: false)
 </head>
 <body>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NBWLFBK"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    
 
     <!-- Top bar Start -->
     <div class="top-bar">
@@ -61,14 +101,14 @@
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Thời Trang Nam</a>
                             <div class="dropdown-menu" id="loadloaimenuTTNam">
-                         
+
                             </div>
                         </div>
 
-                        <div class="nav-item dropdown" >
+                        <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Thời Trang Nữ</a>
                             <div class="dropdown-menu" id="loadloaimenuTTNu">
-                               
+
                             </div>
                         </div>
                         <a href="/lienhe/index/" class="nav-item nav-link">Liên Hệ</a>
@@ -140,7 +180,7 @@
             </nav>
         </div>
     </div>
-  
+
     <!-- Nav Bar End -->
     <!-- Bottom Bar Start -->
     <div class="bottom-bar">
@@ -149,7 +189,7 @@
                 <div class="col-md-3">
                     <div class="logo">
                         <a href="/home/index/">
-                            <img src="~/ecommerce-html-template/img/gonzstore_logo.png" alt="Logo" />
+                            <img src="~/ecommerce-html-template/img/gonzstore_logo.png" alt="GONZStore_Logo" />
                         </a>
                     </div>
                 </div>

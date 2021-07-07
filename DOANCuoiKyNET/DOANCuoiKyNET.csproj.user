@@ -15,5 +15,6 @@
     <WebStackScaffolding_IsReferencingScriptLibrariesSelected>False</WebStackScaffolding_IsReferencingScriptLibrariesSelected>
     <WebStackScaffolding_LayoutPageFile />
     <WebStackScaffolding_DbContextTypeFullName>DOANCuoiKyNET.Entities.MyDBContext</WebStackScaffolding_DbContextTypeFullName>
+    <NameOfLastUsedPublishProfile>FolderProfile3</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>
